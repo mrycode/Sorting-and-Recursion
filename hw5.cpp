@@ -1,19 +1,8 @@
 #include "hw5.h"
 
-void print(std::vector<std::string> &v) {
-  std::cout << "[";
-  bool first = true;
-  for (auto x : v) {
-    if (!first) {
-      std::cout << ", ";
-    }
-    std::cout << x;
-    first = false;
-  }
-  std::cout << "]";
-  std::cout << std::endl;
-}
 
+
+/*
 static void BubbleSortHelper(std::vector<std::string> &vec, int size, std::string tmp_string) {
   if (size==0) {
     return;
@@ -33,8 +22,29 @@ void BubbleSort(std::vector<std::string> &vec) {
     return;
   }
   BubbleSortHelper(vec, vec.size()-1, "");
-}
+}*/
 
+void BubbleSort(std::vector<std::string> &vec) {
+  if (vec.size() <= 1) {
+    return;
+  }
+  
+  int arr_end = vec.size()-1;
+  std::string tmp_string;
+  
+  while (arr_end!=0) {
+    std::cout << arr_end << std::endl;
+    for (int index = 0; index < arr_end; index++) {
+      if (vec[index].compare(vec[index+1]) >= 0) {
+        tmp_string = vec[index];
+        vec[index] = vec[index+1];
+        vec[index+1] = tmp_string;
+      }
+    }
+    arr_end--;
+  }
+  return;
+}
 
 
 
@@ -66,64 +76,7 @@ void InsertionSort(std::vector<int>& v) {
 
 
 
-/*
-static void Merge(std::vector<std::string> &vec, int low, int mid, int high) {
-  
-  std::vector<std::string> tmp_vec(vec.size(), " ");
-  int tmp_index = low;
-  int left_side_start = low;
-  int left_side_end = mid;
-  int right_side_start = mid + 1;
-  int right_side_end = high;
-  
-  while ((left_side_start <= left_side_end) && (right_side_start <= right_side_end)) {
-    if (vec[left_side_start].compare(vec[right_side_start]) <= 0) {
-      tmp_vec[tmp_index] = vec[left_side_start];
-      left_side_start++;
-    }
-    else {
-      tmp_vec[tmp_index] = vec[right_side_start];
-      right_side_start++;
-    }
-    tmp_index++;
-  }
-  while (left_side_start <= left_side_end) {
-    tmp_vec[tmp_index] = vec[left_side_start];
-    left_side_start++;
-    tmp_index++;
-  }
-  
-  while (right_side_start <= right_side_end) {
-    tmp_vec[tmp_index] = vec[right_side_start];
-    right_side_start++;
-    tmp_index++;
-  }
-  
-  for (int return_index=low; return_index <= high; return_index++) {
-    vec[return_index] = tmp_vec[return_index];
-  }
-}
-
-static void MergeSortHelper(std::vector<std::string> &vec, int low, int high) {
-  if (low < high) {
-    int mid = low + (high-low)/2;
-    MergeSortHelper(vec, low, mid);
-    MergeSortHelper(vec, mid+1, high);
-    Merge(vec, low, mid, high);
-  }
-}
-
-void MergeSort(std::vector<std::string> &vec) {
-  if (vec.size()<=1) {
-    return;
-  }
-  MergeSortHelper(vec, 0, vec.size()-1);
-}
-*/
-
 static void MergeHelper(std::vector<std::string> &vec, std::vector<std::string> first_half, std::vector<std::string> second_half) {
-  std::cout << "in 1st half: ";print(first_half);
-  std::cout << "in 2nd half: ";print(second_half);
 
   std::vector<std::string> tmp_vector (vec.size());
   int tmp_index = 0;
@@ -142,7 +95,6 @@ static void MergeHelper(std::vector<std::string> &vec, std::vector<std::string> 
       second_start++;
     }
     tmp_index++;
-    
   }
 
   while (first_start <= first_end) {
@@ -156,14 +108,9 @@ static void MergeHelper(std::vector<std::string> &vec, std::vector<std::string> 
     tmp_index++;
   }
 
-  std::cout << "tmp: ";print(tmp_vector);
-  int max = first_half.size() + second_half.size();
-  std::cout << max << std::endl;
-
-  for (int index = 0; index < max; index++) {
+  for (int index = 0; index < first_half.size() + second_half.size(); index++) {
     vec[index] = tmp_vector[index];
   }
-  std::cout << "vec: ";print(vec);
 }
  
 void MergeSort(std::vector<std::string> &vec) {
@@ -180,23 +127,24 @@ void MergeSort(std::vector<std::string> &vec) {
   int right_start = mid+1;
   int right_end = input_end;
   
-  int right_side;
+  int right_arr_size;
   if (mid == 0) {
-    right_side = 1;
+    right_arr_size = 1;
   }
   else {
-    right_side = mid;
+    right_arr_size = (right_end+1) - right_start;
   }
-  std::vector<std::string> second_half (right_side);
   std::vector<std::string> first_half (mid+1);
+  std::vector<std::string> second_half (right_arr_size);
 
   for (int left_index = left_start; left_index <= left_end; left_index++) {
     first_half[left_index] = vec[left_index];
   }
-  
+
   int index = 0;
   for (int right_index = right_start; right_index <= right_end; right_index++) {
-    second_half[index++] = vec[right_index];
+    second_half[index] = vec[right_index];
+    index++;
   }
 
   MergeSort(first_half);

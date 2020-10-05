@@ -3,6 +3,19 @@
 #include "hw5.h"
 
 
+void print(std::vector<std::string> &v) {
+  std::cout << "[";
+  bool first = true;
+  for (auto x : v) {
+    if (!first) {
+      std::cout << ", ";
+    }
+    std::cout << x;
+    first = false;
+  }
+  std::cout << "]";
+  std::cout << std::endl;
+}
 
 void print(std::vector<int> &v) {
   std::cout << "[";
@@ -25,13 +38,16 @@ int main() {
 
   v = {"emma", "dora"};
   v = {"emma", "dora", "ruth"};
-  v = {"emma", "dora", "ruth", "ziegellaub", "eichler"};
+  v = {"emma", "dora", "ruth", "ziegellaub", "eichler", "ruth", "ziegellaub", "test", "ruth", "ziegellaub"};
+  v = {"emma"};
   v_int = {-6,-4,-23,-7,-9,-5,-3,-8,-6543,-3,-5,-6778,-100};
   //std::cout << "Case 1: ";
-  MergeSort(v);
+  //MergeSort(v);
   //print(v);
 
-  //BubbleSort(v);
+  BubbleSort(v);
+  print(v);
+
   //InsertionSort(v_int);
   //std::cout << "output: ";
   //print(v_int);
